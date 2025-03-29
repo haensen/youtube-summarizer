@@ -1,6 +1,6 @@
 import { Button, IconButton, Paper, TextField, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Settings } from './settings';
 import { SummarizerPopup } from './summarizerPopup';
@@ -12,20 +12,30 @@ for (let i = 0; i < 10; i++) {
     initialSummaryText = initialSummaryText.concat(initialSummaryText);
 }
 
+localStorage['apiSettings'] = localStorage['apiSettings'] || JSON.stringify({
+    apiKey: '',
+    apiUrl: 'http://127.0.0.1:1234',
+    model: '',
+    availableModels: [],
+});
+
 function App() {
-    const [apiSettings, setApiSettings] = useState<ApiSettings>({
-        apiKey: '',
-        apiUrl: 'http://127.0.0.1:1234',
-        model: '',
-        availableModels: [],
-    });
+    const [apiSettings, setApiSettings] = useState<ApiSettings>(JSON.parse(localStorage['apiSettings']));
     const [url, setUrl] = useState('');
     const [summary, setSummary] = useState(initialSummaryText);
     const [showSettings, setShowSettings] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const setApiSettingsPersistently = useMemo(() => {
+        return (settings: ApiSettings) => {
+            setApiSettings(settings);
+            localStorage['apiSettings'] = JSON.stringify(settings);
+            console.log("Persisted settings: ", settings);
+        };
+    }, []);
+
     return (
-        <ApiSettingsContext.Provider value={{...apiSettings, setApiSettings}}>
+        <ApiSettingsContext.Provider value={{...apiSettings, setApiSettings: setApiSettingsPersistently}}>
             <div className="flex flex-col h-screen">
                 <div>
                     <IconButton aria-label="settings" onClick={() => setShowSettings(!showSettings)} className="float-right">
