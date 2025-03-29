@@ -36,8 +36,9 @@ const createWindow = (): void => {
     callback({
       responseHeaders: {
         'Access-Control-Allow-Origin': '*', // Bypass youtube CORS
+        'Access-Control-Allow-Headers': '*', // This was needed for LM Studio
         ...details.responseHeaders,
-        'Content-Security-Policy': "default-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://www.youtube.com", // Allow connecting to youtube.com
+        'Content-Security-Policy': "default-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src * data: blob:", // Allow connecting to youtube and other APIs
       }
     });
   });

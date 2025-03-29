@@ -2,17 +2,32 @@ import { Backdrop, Button, FormControl, IconButton, InputLabel, MenuItem, Paper,
 import CloseIcon from "@mui/icons-material/Close";
 import { useContext, useState } from "react";
 import { ApiSettingsContext } from "./apiSettingsContext";
+import OpenAI from "openai";
 
 interface Props {
     onClose: () => void;
 }
 
 export function Settings({ onClose }: Props) {
-    const [models, setModels] = useState<string[]>(["gpt-3.5-turbo", "gpt-4"]);
     const apiSettings = useContext(ApiSettingsContext);
 
     function refreshModels() {
+        const client = new OpenAI({
+            baseURL: apiSettings.apiUrl + '/v1',
+            apiKey: apiSettings.apiKey == '' ? null : apiSettings.apiKey,
+            dangerouslyAllowBrowser: true, // Not a problem here. Meant to prevent exposing the API key in public web sites.
+        });
 
+        client.models.list().then((response) => {
+            const modelNames = response.data.map((model) => model.id);
+            apiSettings.setApiSettings({
+                ...apiSettings,
+                availableModels: modelNames,
+            });
+        }).catch((err) => {
+            console.error(err);
+            alert("Error refreshing models: " + err);
+        });
     }
 
     return (
@@ -54,7 +69,7 @@ export function Settings({ onClose }: Props) {
                         variant="outlined"
                         fullWidth
                         >
-                        {models.map((model) => (
+                        {apiSettings.availableModels.map((model) => (
                             <MenuItem key={model} value={model}>{model}</MenuItem>
                         ))}
                     </Select>

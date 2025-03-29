@@ -4,6 +4,7 @@ export interface ApiSettings {
     apiKey: string;
     apiUrl: string;
     model: string;
+    availableModels?: string[];
 };
 
 export interface ApiSettingsContextType extends ApiSettings {

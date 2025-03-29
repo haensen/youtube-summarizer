@@ -1,6 +1,6 @@
 import { Button, IconButton, Paper, TextField, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { createContext, useState } from 'react';
+import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Settings } from './settings';
 import { SummarizerPopup } from './summarizerPopup';
@@ -14,8 +14,9 @@ for (let i = 0; i < 10; i++) {
 function App() {
     const [apiSettings, setApiSettings] = useState<ApiSettings>({
         apiKey: '',
-        apiUrl: '',
+        apiUrl: 'http://127.0.0.1:1234',
         model: '',
+        availableModels: [],
     });
     const [url, setUrl] = useState('');
     const [summary, setSummary] = useState(initialSummaryText);
