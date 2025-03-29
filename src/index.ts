@@ -25,7 +25,9 @@ const createWindow = (): void => {
 
   // Allow fetching from youtube.com
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    details.requestHeaders['Origin'] = null; // Bypass youtube CORS
+    if (details.url.startsWith('https://www.youtube.com')) {
+      details.requestHeaders['Origin'] = null; // Bypass youtube CORS
+    }
     callback({
       requestHeaders: {
         ...details.requestHeaders,
@@ -33,13 +35,20 @@ const createWindow = (): void => {
     });
   });
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    if (details.method == 'OPTIONS') {
+      // FIX: This is a workaround for the CORS preflight request that is sent by the browser.
+      details.statusLine = "HTTP/1.1 204 No Content";
+      details.statusCode = 204;
+    }
     callback({
+      ...details,
       responseHeaders: {
         'Access-Control-Allow-Origin': '*', // Bypass youtube CORS
         'Access-Control-Allow-Headers': '*', // This was needed for LM Studio
+        'Access-Control-Allow-Methods': '*',
         ...details.responseHeaders,
         'Content-Security-Policy': "default-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src * data: blob:", // Allow connecting to youtube and other APIs
-      }
+      },
     });
   });
 

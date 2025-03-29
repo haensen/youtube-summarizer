@@ -1,7 +1,9 @@
 import { Backdrop, Paper, Typography } from "@mui/material";
-import { decode, encode } from "html-entities";
-import { useEffect, useState } from "react";
+import { decode } from "html-entities";
+import OpenAI from "openai";
+import { useContext, useEffect, useState } from "react";
 import { YoutubeTranscript } from "youtube-transcript";
+import { ApiSettingsContext } from "./apiSettingsContext";
 
 interface Props {
     url: string;
@@ -23,6 +25,7 @@ const States = {
 export function SummarizerPopup({ url, onDone }: Props) {
     const [transcript, setTranscript] = useState('');
     const [displayState, setDisplayState] = useState(States.GETTING_TRANSCRIPT);
+    const apiSettings = useContext(ApiSettingsContext);
 
     useEffect(() => {
         YoutubeTranscript.fetchTranscript(url).then((transcriptResponse) => {
@@ -33,7 +36,7 @@ export function SummarizerPopup({ url, onDone }: Props) {
             setTranscript(transcriptText);
         }).catch((err) => {
             console.error(err);
-            onDone('Error fetching transcript');
+            onDone(`Error fetching transcript: ${err}`);
         });
     }, [url]);
 
@@ -42,8 +45,34 @@ export function SummarizerPopup({ url, onDone }: Props) {
         setDisplayState(States.SUMMARIZING);
         console.log('Summarizing...');
 
-        setDisplayState(States.FINISHING);
-        onDone('Summary of the video: ' + transcript);
+        const client = new OpenAI({
+            baseURL: apiSettings.apiUrl + '/v1',
+            apiKey: apiSettings.apiKey == '' ? null : apiSettings.apiKey,
+            dangerouslyAllowBrowser: true, // Not a problem here. Meant to prevent exposing the API key in public web sites.
+        });
+        client.chat.completions.create({
+            model: apiSettings.model,
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are a helpful assistant that summarizes video transcripts.',
+                },
+                {
+                    role: 'user',
+                    content: 'Summarize the following video transcript:\n' + transcript,
+                },
+            ],
+            temperature: 0.5,
+        }).then((response) => {
+            console.log('OpenAI api response:', response);
+            const summary = response.choices[0].message.content;
+            console.log('Summary:', summary);
+            setDisplayState(States.FINISHING);
+            onDone(summary);
+        }).catch((err) => {
+            console.error(err);
+            onDone(`Error summarizing transcript: ${err}`);
+        });
     }, [transcript]);
 
     return (
