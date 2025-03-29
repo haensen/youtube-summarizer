@@ -6,36 +6,27 @@ import { Settings } from './settings';
 import { SummarizerPopup } from './summarizerPopup';
 import { ApiSettings, ApiSettingsContext } from './apiSettingsContext';
 import { Summary } from './summary';
+import { useStateLocalStorage } from './useStateLocalStorage';
 
 let initialSummaryText = "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 for (let i = 0; i < 10; i++) {
     initialSummaryText = initialSummaryText.concat(initialSummaryText);
 }
 
-localStorage['apiSettings'] = localStorage['apiSettings'] || JSON.stringify({
-    apiKey: '',
-    apiUrl: 'http://127.0.0.1:1234',
-    model: '',
-    availableModels: [],
-});
-
 function App() {
-    const [apiSettings, setApiSettings] = useState<ApiSettings>(JSON.parse(localStorage['apiSettings']));
+    const [apiSettings, setApiSettings] = useStateLocalStorage<ApiSettings>('apiSettings', {
+        apiKey: '',
+        apiUrl: 'http://127.0.0.1:1234',
+        model: '',
+        availableModels: [],
+    });
     const [url, setUrl] = useState('');
     const [summary, setSummary] = useState(initialSummaryText);
     const [showSettings, setShowSettings] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const setApiSettingsPersistently = useMemo(() => {
-        return (settings: ApiSettings) => {
-            setApiSettings(settings);
-            localStorage['apiSettings'] = JSON.stringify(settings);
-            console.log("Persisted settings: ", settings);
-        };
-    }, []);
-
     return (
-        <ApiSettingsContext.Provider value={{...apiSettings, setApiSettings: setApiSettingsPersistently}}>
+        <ApiSettingsContext.Provider value={{...apiSettings, setApiSettings}}>
             <div className="flex flex-col h-screen">
                 <div>
                     <IconButton aria-label="settings" onClick={() => setShowSettings(!showSettings)} className="float-right">
