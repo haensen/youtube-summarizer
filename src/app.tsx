@@ -1,6 +1,6 @@
 import { Button, IconButton, Paper, TextField, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Settings } from './settings';
 import { SummarizerPopup } from './summarizerPopup';
@@ -19,6 +19,7 @@ function App() {
         apiUrl: 'http://127.0.0.1:1234',
         model: '',
         availableModels: [],
+        autoPasteYoutubeUrl: true,
     });
     const [url, setUrl] = useState('');
     const [summary, setSummary] = useState(initialSummaryText);

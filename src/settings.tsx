@@ -1,6 +1,6 @@
-import { Backdrop, Button, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
+import { Backdrop, Button, Divider, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Paper, Select, Switch, TextField, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ApiSettingsContext } from "./apiSettingsContext";
 import OpenAI from "openai";
 
@@ -74,6 +74,16 @@ export function Settings({ onClose }: Props) {
                         ))}
                     </Select>
                 </FormControl>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={apiSettings.autoPasteYoutubeUrl}
+                            onChange={(e) => apiSettings.setApiSettings({...apiSettings, autoPasteYoutubeUrl: e.target.checked})}
+                            />
+                    }
+                    label="Automatically paste Youtube URL from clipboard"
+                    style={{marginTop: 15}}
+                    />
             </Paper>
         </Backdrop>
     );
