@@ -52,6 +52,7 @@
     "@tailwindcss/postcss": "^4.0.17",
     "electron-squirrel-startup": "^1.0.1",
     "html-entities": "^2.5.5",
+    "markdown-to-jsx": "^7.7.4",
     "openai": "^4.90.0",
     "postcss": "^8.5.3",
     "postcss-loader": "^8.1.1",

@@ -55,7 +55,7 @@ export function SummarizerPopup({ url, onDone }: Props) {
             messages: [
                 {
                     role: 'system',
-                    content: 'You are a helpful assistant that summarizes video transcripts.',
+                    content: 'You are an assistant that summarizes video transcripts. Use markdown to format the summary.',
                 },
                 {
                     role: 'user',
