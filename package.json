@@ -51,6 +51,7 @@
     "@mui/material": "^7.0.1",
     "@tailwindcss/postcss": "^4.0.17",
     "electron-squirrel-startup": "^1.0.1",
+    "html-entities": "^2.5.5",
     "postcss": "^8.5.3",
     "postcss-loader": "^8.1.1",
     "react": "^19.1.0",
