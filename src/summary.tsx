@@ -7,7 +7,7 @@ interface Props {
 export function Summary({ summary }: Props) {
     return (
         <div className="overflow-y-auto h-full">
-            <Markdown>{summary}</Markdown>
+            <Markdown className="markdown">{summary}</Markdown>
         </div>
     );
 }
