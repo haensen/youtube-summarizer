@@ -55,11 +55,19 @@ export function SummarizerPopup({ url, onDone }: Props) {
             messages: [
                 {
                     role: 'system',
-                    content: 'You are an assistant that summarizes video transcripts. Use markdown to format the summary.',
+                    content: `
+                        Your inputs are video transcripts which you must summarize.
+                        Use markdown to format the summary.
+                        Output only the summary.
+                        Make the summary as short as possible while keeping the meaning.
+                        Make the summary informational.
+                        Use bullet points if possible.
+                        Start the summary with an approbiate title.
+                    `,
                 },
                 {
                     role: 'user',
-                    content: 'Summarize the following video transcript:\n' + transcript,
+                    content: transcript,
                 },
             ],
             temperature: 0.5,
