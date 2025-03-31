@@ -1,4 +1,4 @@
-import { Backdrop, Button, Divider, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Paper, Select, Switch, TextField, Typography } from "@mui/material";
+import { Backdrop, Button, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Paper, Select, Switch, TextField, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useContext } from "react";
 import { ApiSettingsContext } from "./apiSettingsContext";

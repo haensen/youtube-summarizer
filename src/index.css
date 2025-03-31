@@ -1,7 +1,13 @@
 @import "tailwindcss";
 
-.markdown ul {
+.markdown ul,ol {
     padding-left: 2.5rem;
+}
+.markdown ul {
+    list-style-type: disc;
+}
+.markdown ol {
+    list-style-type: decimal;
 }
 
 .markdown h1 {
