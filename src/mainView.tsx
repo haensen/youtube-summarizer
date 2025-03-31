@@ -1,19 +1,14 @@
 import { useUrl } from './useUrl';
-import { Button, IconButton, Paper, TextField, Typography } from '@mui/material';
+import { Button, IconButton, Paper, TextField } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useState } from 'react';
 import { Settings } from './settings';
 import { SummarizerPopup } from './summarizerPopup';
 import { Summary } from './summary';
 
-let initialSummaryText = "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-for (let i = 0; i < 10; i++) {
-    initialSummaryText = initialSummaryText.concat(initialSummaryText);
-}
-
 export function MainView() {
     const [url, setUrl] = useUrl('');
-    const [summary, setSummary] = useState(initialSummaryText);
+    const [summary, setSummary] = useState('# Youtube Video Summarizer\nPaste a Youtube URL and click "Summarize".');
     const [showSettings, setShowSettings] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -23,10 +18,15 @@ export function MainView() {
                 <IconButton aria-label="settings" onClick={() => setShowSettings(!showSettings)} className="float-right">
                     <SettingsIcon />
                 </IconButton>
-                <Typography variant="h3" className="text-center">Youtube Video Summarizer</Typography>
                 <form>
-                    <div className='flex flex-row items-center justify-center gap-2 items-stretch'>
-                        <TextField id="outlined-basic" label="Youtube URL" variant="outlined" value={url} onChange={(e) => setUrl(e.target.value)} style={{width: "25em"}} className="" />
+                    <div className='flex flex-row items-center justify-center gap-2 items-stretch mt-4'>
+                        <TextField
+                            id="outlined-basic"
+                            label="Youtube URL"
+                            variant="outlined"
+                            value={url}
+                            onChange={(e) => setUrl(e.target.value)} style={{width: "25em"}}
+                            />
                         <Button variant="contained" onClick={() => setLoading(true)}>Summarize</Button>
                     </div>
                 </form>
