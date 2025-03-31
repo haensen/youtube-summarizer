@@ -68,6 +68,9 @@ const createWindow = (): void => {
     }
   });
 
+  // Hide the menu bar
+  mainWindow.setMenu(null);
+
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 };
