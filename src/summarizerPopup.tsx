@@ -63,6 +63,7 @@ export function SummarizerPopup({ url, onDone }: Props) {
                         Make the summary informational.
                         Use bullet points if possible.
                         Start the summary with an appropriate title.
+                        It is not needed to mention that it is a summary.
                     `,
                 },
                 {

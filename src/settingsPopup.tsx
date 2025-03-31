@@ -40,9 +40,10 @@ export function SettingsPopup({ onClose }: Props) {
             <Paper onClick={(e) => e.stopPropagation()} className="w-4/5 max-w-md p-4">
                 <Typography variant="h4" className="text-center">Settings</Typography>
                 
+                <Typography variant="subtitle2" style={{marginTop: 15}}>This can be OpenAI or LM Studio API.</Typography>
                 <TextField
                     required
-                    label="OpenAI API Address"
+                    label="API Address"
                     value={apiSettings.apiUrl}
                     onChange={(e) => apiSettings.setApiSettings({...apiSettings, apiUrl: e.target.value})}
                     variant="outlined"
