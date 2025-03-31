@@ -1,15 +1,21 @@
 import { useUrl } from './useUrl';
 import { Button, IconButton, Paper, TextField } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useState } from 'react';
-import { Settings } from './settings';
+import { useContext, useState } from 'react';
+import { SettingsPopup } from './settingsPopup';
 import { SummarizerPopup } from './summarizerPopup';
 import { Summary } from './summary';
+import { ApiSettingsContext } from './apiSettingsContext';
 
 export function MainView() {
     const [url, setUrl] = useUrl('');
-    const [summary, setSummary] = useState('# Youtube Video Summarizer\nPaste a Youtube URL and click "Summarize".');
-    const [showSettings, setShowSettings] = useState(false);
+    const [summary, setSummary] = useState('# Youtube Video Summarizer\nPaste a Youtube URL and hit "Summarize".');
+    const apiSettings = useContext(ApiSettingsContext); // Open settings if they're not OK
+    const [showSettings, setShowSettings] = useState(!(
+        apiSettings.apiUrl !== '' &&
+        apiSettings.model !== '' &&
+        apiSettings.availableModels.includes(apiSettings.model)
+    ));
     const [loading, setLoading] = useState(false);
 
     return (
@@ -35,7 +41,7 @@ export function MainView() {
                 <Summary summary={summary} />
             </Paper>
 
-            {showSettings && <Settings onClose={() => setShowSettings(false)} />}
+            {showSettings && <SettingsPopup onClose={() => setShowSettings(false)} />}
 
             {loading && <SummarizerPopup url={url} onDone={(summary) => {
                 setSummary(summary);

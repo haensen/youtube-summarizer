@@ -4,7 +4,7 @@ export interface ApiSettings {
     apiKey: string;
     apiUrl: string;
     model: string;
-    availableModels?: string[];
+    availableModels: string[];
     autoPasteYoutubeUrl: boolean;
 };
 
