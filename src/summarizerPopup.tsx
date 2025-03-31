@@ -62,7 +62,7 @@ export function SummarizerPopup({ url, onDone }: Props) {
                         Make the summary as short as possible while keeping the meaning.
                         Make the summary informational.
                         Use bullet points if possible.
-                        Start the summary with an approbiate title.
+                        Start the summary with an appropriate title.
                     `,
                 },
                 {
@@ -85,7 +85,7 @@ export function SummarizerPopup({ url, onDone }: Props) {
 
     return (
         <Backdrop open={true} className="z-50">
-            <Paper onClick={() => onDone('plah plah')} className="w-4/5 max-w-md p-4">
+            <Paper className="w-4/5 max-w-md p-4">
                 <Typography variant="h4" className="text-center">
                     {displayState.text}
                 </Typography>
