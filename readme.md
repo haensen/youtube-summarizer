@@ -1,3 +1,15 @@
+# Youtube Summarizer
+
+## Why?
+
+- Know whether a 15 minute video is worth watching without spending 15 minutes.
+- Prevent getting clickbaited by knowing the actual content before clicking.
+- Get summaries for videos.
+
+![](./Screenshot.png)
+
+Works with both OpenAI and LM Studio API's. Option to automatically copy-paste Youtube URL from clipboard.
+
 ## Which model can be used when self-hosting?
 
 | Model                         | Notes                                                         |
