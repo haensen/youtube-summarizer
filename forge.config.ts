@@ -47,6 +47,19 @@ const config: ForgeConfig = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'haensen',
+          name: 'youtube-summarizer',
+        },
+        prerelease: false,
+        authToken: process.env.GITHUB_TOKEN,
+      },
+    }
+  ]
 };
 
 export default config;
