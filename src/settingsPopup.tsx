@@ -1,7 +1,7 @@
-import { Backdrop, Button, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Paper, Select, Switch, TextField, Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Backdrop, Button, FormControl, FormControlLabel, InputLabel, MenuItem, Paper, Select, Switch, TextField, Typography } from "@mui/material";
 import { useContext } from "react";
 import { ApiSettingsContext } from "./apiSettingsContext";
+import { isURL } from "validator";
 import OpenAI from "openai";
 
 interface Props {
@@ -10,6 +10,7 @@ interface Props {
 
 export function SettingsPopup({ onClose }: Props) {
     const apiSettings = useContext(ApiSettingsContext);
+    const canClose = isURL(apiSettings.apiUrl) && apiSettings.model !== '' && apiSettings.availableModels.includes(apiSettings.model);
 
     function refreshModels() {
         const client = new OpenAI({
@@ -31,11 +32,12 @@ export function SettingsPopup({ onClose }: Props) {
     }
 
     return (
-        <Backdrop open={true} onClick={onClose} className="z-50">
+        <Backdrop
+            open={true}
+            onClick={canClose ? onClose : undefined}
+            className="z-50"
+            >
             <Paper onClick={(e) => e.stopPropagation()} className="w-4/5 max-w-md p-4">
-                <IconButton aria-label="close" onClick={onClose} style={{ float: "right" }}>
-                    <CloseIcon />
-                </IconButton>
                 <Typography variant="h4" className="text-center">Settings</Typography>
                 
                 <TextField
@@ -46,6 +48,7 @@ export function SettingsPopup({ onClose }: Props) {
                     variant="outlined"
                     fullWidth
                     style={{marginTop: 5}}
+                    error={!isURL(apiSettings.apiUrl)}
                     />
                 <Typography variant="subtitle2" style={{marginTop: 15}}>The API Key is not needed when using LM Studio.</Typography>
                 <TextField
@@ -68,6 +71,7 @@ export function SettingsPopup({ onClose }: Props) {
                         label="Model"
                         variant="outlined"
                         fullWidth
+                        error={!apiSettings.availableModels.includes(apiSettings.model)}
                         >
                         {apiSettings.availableModels.map((model) => (
                             <MenuItem key={model} value={model}>{model}</MenuItem>
@@ -84,6 +88,7 @@ export function SettingsPopup({ onClose }: Props) {
                     label="Automatically paste Youtube URL from clipboard"
                     style={{marginTop: 15}}
                     />
+                <Button disabled={!canClose} variant="contained" onClick={onClose} className="float-right mt-5">Close</Button>
             </Paper>
         </Backdrop>
     );
