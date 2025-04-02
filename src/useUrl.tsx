@@ -15,7 +15,11 @@ export function useUrl(initialUrl: string, startSummarizing: () => void) {
             if (apiSettings.autoSummarizeClipboardUrl) {
                 navigator.clipboard.readText().then((text) => {
                     // Don't copy same url again
-                    if (text !== lastClipboardUrl && text.startsWith('https://www.youtube.com/watch?v=')) {
+                    if (text !== lastClipboardUrl && (
+                            text.startsWith('https://www.youtube.com/watch?v=') ||
+                            text.startsWith('https://www.youtube.com/embed/')
+                        )
+                    ) {
                         setUrl(text);
                         lastClipboardUrl = text;
                         startSummarizing();
