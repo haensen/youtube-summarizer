@@ -3,21 +3,22 @@ import { ApiSettingsContext } from "./apiSettingsContext";
 
 let lastClipboardUrl = '';
 
-export function useUrl(initialUrl: string) {
+export function useUrl(initialUrl: string, startSummarizing: () => void) {
     const [url, setUrl] = useState<string>(initialUrl);
     const apiSettings = useContext(ApiSettingsContext);
 
     // Check for clipboard changes every second
     useEffect(() => {
-        if (!apiSettings.autoPasteYoutubeUrl) return;
+        if (!apiSettings.autoSummarizeClipboardUrl) return;
         
         const interval = setInterval(() => {
-            if (apiSettings.autoPasteYoutubeUrl) {
+            if (apiSettings.autoSummarizeClipboardUrl) {
                 navigator.clipboard.readText().then((text) => {
                     // Don't copy same url again
                     if (text !== lastClipboardUrl && text.startsWith('https://www.youtube.com/watch?v=')) {
                         setUrl(text);
                         lastClipboardUrl = text;
+                        startSummarizing();
                     }
                 }).catch((err) => {
                     console.error('Failed to read clipboard contents: ', err);
@@ -25,7 +26,7 @@ export function useUrl(initialUrl: string) {
             }
         }, 1000);
         return () => clearInterval(interval);
-    }, [apiSettings.autoPasteYoutubeUrl]);
+    }, [apiSettings.autoSummarizeClipboardUrl]);
 
     return [url, setUrl] as const;
 }

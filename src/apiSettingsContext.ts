@@ -5,7 +5,7 @@ export interface ApiSettings {
     apiUrl: string;
     model: string;
     availableModels: string[];
-    autoPasteYoutubeUrl: boolean;
+    autoSummarizeClipboardUrl: boolean;
 };
 
 export interface ApiSettingsContextType extends ApiSettings {

@@ -82,11 +82,11 @@ export function SettingsPopup({ onClose }: Props) {
                 <FormControlLabel
                     control={
                         <Switch
-                            checked={apiSettings.autoPasteYoutubeUrl}
-                            onChange={(e) => apiSettings.setApiSettings({...apiSettings, autoPasteYoutubeUrl: e.target.checked})}
+                            checked={apiSettings.autoSummarizeClipboardUrl}
+                            onChange={(e) => apiSettings.setApiSettings({...apiSettings, autoSummarizeClipboardUrl: e.target.checked})}
                             />
                     }
-                    label="Automatically paste Youtube URL from clipboard"
+                    label="Automatically summarize Youtube URL from clipboard"
                     style={{marginTop: 15}}
                     />
                 <Button disabled={!canClose} variant="contained" onClick={onClose} className="float-right mt-5">Close</Button>

@@ -8,7 +8,8 @@ import { Summary } from './summary';
 import { ApiSettingsContext } from './apiSettingsContext';
 
 export function MainView() {
-    const [url, setUrl] = useUrl('');
+    const [summarizing, setSummarizing] = useState(false);
+    const [url, setUrl] = useUrl('', () => setSummarizing(true));
     const [summary, setSummary] = useState('# Youtube Video Summarizer\nPaste a Youtube URL and hit "Summarize".');
     const apiSettings = useContext(ApiSettingsContext); // Open settings if they're not OK
     const [showSettings, setShowSettings] = useState(!(
@@ -16,7 +17,6 @@ export function MainView() {
         apiSettings.model !== '' &&
         apiSettings.availableModels.includes(apiSettings.model)
     ));
-    const [loading, setLoading] = useState(false);
 
     return (
         <div className="flex flex-col h-screen">
@@ -33,7 +33,7 @@ export function MainView() {
                             value={url}
                             onChange={(e) => setUrl(e.target.value)} style={{width: "25em"}}
                             />
-                        <Button variant="contained" onClick={() => setLoading(true)}>Summarize</Button>
+                        <Button variant="contained" onClick={() => setSummarizing(true)}>Summarize</Button>
                     </div>
                 </form>
             </div>
@@ -43,9 +43,9 @@ export function MainView() {
 
             {showSettings && <SettingsPopup onClose={() => setShowSettings(false)} />}
 
-            {loading && <SummarizerPopup url={url} onDone={(summary) => {
+            {summarizing && <SummarizerPopup url={url} onDone={(summary) => {
                 setSummary(summary);
-                setLoading(false);
+                setSummarizing(false);
             }} />}
         </div>
     )

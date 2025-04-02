@@ -6,7 +6,11 @@ export function useStateLocalStorage<T>(key: string, initialValue: T) {
         if (item === null) {
             return initialValue;
         }
-        return JSON.parse(item);
+        if (typeof initialValue === 'object') {
+            return {...initialValue, ...JSON.parse(item)};
+        } else {
+            return JSON.parse(item);
+        }
     });
 
     const setStoredValue = (value: T) => {
