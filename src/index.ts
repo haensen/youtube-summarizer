@@ -10,6 +10,10 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+// Update the app to the latest version if needed
+const { updateElectronApp } = require('update-electron-app');
+updateElectronApp();
+
 const createWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
